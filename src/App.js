@@ -15,12 +15,14 @@ const App = class extends Component {
   }
 
   state = {
-    radius: 1
+    radius: 1,
+    rotation: 0
   };
 
   render() {
     const {
-      radius = 1
+      radius = 1,
+      rotation = 0
     } = this.state;
 
     return (
@@ -32,22 +34,34 @@ const App = class extends Component {
           value={radius}
           onChange={({target: {value = '1'} = {}} = {}) => this.setState({radius: parseFloat(value)})}
         />
+        <input
+          type='number'
+          step={0.1}
+          placeholder='Rotation'
+          value={rotation}
+          onChange={({target: {value = '1'} = {}} = {}) => this.setState({rotation: parseFloat(value)})}
+        />
         <Canvas>
           <pointLight
             position={new THREE.Vector3(50, 50, 50)}
           />
-          <mesh
-            scale={new THREE.Vector3(radius, radius, radius)}
+          <group
+            rotation={new THREE.Euler(rotation, 0, 0)}
           >
-            <sphereGeometry
-              attach='geometry'
-              args={[1, 360, 360]}
-            />
-            <meshLambertMaterial
-              attach='material'
-              color='#0096E4'
-            />
-          </mesh>
+            <mesh
+              position={new THREE.Vector3(-5, -5, -5)}
+              scale={new THREE.Vector3(radius, radius, radius)}
+            >
+              <sphereGeometry
+                attach='geometry'
+                args={[1, 360, 360]}
+              />
+              <meshLambertMaterial
+                attach='material'
+                color='#0096E4'
+              />
+            </mesh>
+          </group>
         </Canvas>
       </div>
     );
